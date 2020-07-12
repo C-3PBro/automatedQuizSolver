@@ -1,6 +1,6 @@
 # Automated quiz solver (maze of oedipus)
 
-Little python project that solves the riddle of the maze of oedipus as described on http://holdirdeinenvertrag.de.
+Little python project to automatically solve the maze of oedipus as described on http://holdirdeinenvertrag.de using Selenium and BeautifulSoup.
 
 ### Prerequisites
 
