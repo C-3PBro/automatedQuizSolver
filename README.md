@@ -6,3 +6,5 @@ Little python project that solves the riddle of the maze of oedipus as described
 
 * Selenium (and a webdriver; in the code I use the chromedriver.exe)
 * BeautifulSoup
+
+Other packages used in the code are 're' and 'time' 
