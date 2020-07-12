@@ -2,7 +2,7 @@
 """
 Created on Fri Jul 10 22:15:41 2020
 
-@author: Nico Sieber
+@author: C-3PBro
 """
 
 #%% Imports
