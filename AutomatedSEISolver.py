@@ -81,6 +81,7 @@ class SEI_quiz(SEI_Selenium):
         # Container of collected letters:
         self.collection = []
     
+    # Concatenates letters in self.collection
     def solution(self):
         try:
             if len(self.collection) == 0:
@@ -108,6 +109,7 @@ class SEI_quiz(SEI_Selenium):
     def reset(self):
         self.move(0, 0)
     
+    # Algorithm for solving the maze.
     def moveIter(self,x,y):        
         self.move(x,y)
         
