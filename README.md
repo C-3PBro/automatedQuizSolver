@@ -6,9 +6,6 @@ Oedipus, the son of King Laios, has to pick up stones in a labyrinth. The labyri
 
 Each of the stones that Oedipus has to pick up carries a letter. There are 5 stones in total: L, A, I, O and S. In what order does Ödipus collect the stones if he starts at the position (x, y) below and proceeds according to the following algorithm:
 
-
-BEGIN
-
      FUNCTION Go (x, y)
      BEGIN
           IF Invalid (x, y) OR Already visited (x, y) THEN
@@ -21,7 +18,6 @@ BEGIN
           GoTo (x-1, y) // to the left
           GoTo (x, y-1) // go up
      END
-END
 
 ### Prerequisites
 * Selenium 
