@@ -28,7 +28,7 @@ class SEI_Selenium():
         self.letters = self.getLetters()        
         
     def callAndPrepareSEIQuiz(self):
-        self.driver = webdriver.Chrome(executable_path=r'C:/Users/Nico Sieber/Documents/Python Projects/Selenium Tests//chromedriver.exe')
+        self.driver = webdriver.Chrome(executable_path=r'./chromedriver.exe')
         self.driver.get('http://www.holdirdeinenvertrag.de/')
         return BeautifulSoup(self.driver.page_source, "html.parser")
         
