@@ -11,10 +11,8 @@ BEGIN
      IF Invalid (x, y) OR Already visited (x, y) THEN
          RETURN
      ENDIF
-
      Collect (x, y)
      Mark As Visited (x, y)
-
      Go (x + 1, y) // to the right
      GoTo (x, y + 1) // down
      GoTo (x-1, y) // to the left
@@ -22,7 +20,6 @@ BEGIN
 END
 
 ### Prerequisites
-
 * Selenium 
 * BeautifulSoup
 
