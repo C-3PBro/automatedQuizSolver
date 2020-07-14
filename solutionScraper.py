@@ -9,6 +9,12 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 import re
 import time
+import numpy as np
+import pandas as pd
+import glob
+import matplotlib.pyplot as plt
+from matplotlib import rc
+rc('text', usetex=True)
 
 #%% Classes
 # Class for processing the website with Selenium
@@ -21,7 +27,7 @@ class SEI_Selenium():
         self.letters = self.getLetters()        
         
     def callAndPrepareSEIQuiz(self):
-        self.driver = webdriver.Chrome(executable_path=r'./chromedriver.exe')
+        self.driver = webdriver.Chrome(executable_path=r'C:/Users/Nico Sieber/Documents/Python Projects/Selenium Tests/chromedriver.exe')
         self.driver.get('http://www.holdirdeinenvertrag.de/')
         return BeautifulSoup(self.driver.page_source, "html.parser")
         
@@ -133,10 +139,52 @@ class SEI_quiz(SEI_Selenium):
         self.solutionInputField.submit()
 
 
-#%% Test 
+#%% Main
 if __name__ == '__main__':
-    person = SEI_quiz()
-    person.moveIter(person.start[0],person.start[1])
-    person.solution()
-    time.sleep(1)
-    person.callSolutionPage(person.solution)
+    # Scraping data
+    solutions = np.asarray([])
+    for i in range(100):
+        person = SEI_quiz()
+        person.moveIter(person.start[0],person.start[1])
+        person.solution()
+        time.sleep(1)
+        solutions = np.concatenate((solutions,person.solution), axis=None)
+        person.driver.quit()
+        print('Iteration '+ str(i+1) +' done!')
+
+    # Save data
+    solutions2DataFrame = pd.DataFrame(solutions)
+    fileList = glob.glob('*.csv')
+    if fileList.count('scrapedSolutionData.csv') >= 1:
+        print('Append scraped solutions to solution file...')
+        dataFrame = pd.read_pickle('scrapedSolutionData.csv')
+        dataFrame = dataFrame.append(solutions2DataFrame, ignore_index=True)
+        dataFrame.to_pickle('scrapedSolutionData.csv')
+    else:
+        print('Creating solution file...')
+        print('Append scraped solutions to solution file...')
+        solutions2DataFrame.to_pickle('scrapedSolutionData.csv')
+    
+    # Plotting data in a histogram
+    solutionsDataFrame = pd.read_pickle('scrapedSolutionData.csv')
+    solutionsDataFrame.columns = ['Solutions']
+    solutionArray = np.asarray(solutionsDataFrame['Solutions']).astype('<U32')
+    with plt.style.context(('seaborn')):
+        plt.figure(figsize=[16,9])
+        bins = np.arange(len(np.unique(solutionArray))+1)-0.5
+        plt.hist(solutionArray, bins, width=0.95, edgecolor='black',linewidth=1.2)
+        plt.xticks(rotation=90)
+        plt.title(r'\textbf{Frequency of different solutions}'
+                  + '\nTotal trials: ' + str(len(solutionArray))
+                  + '\nNumber of different solutions: ' + str(len(np.unique(solutionArray))))
+    
+    
+
+
+
+
+
+
+
+
+
