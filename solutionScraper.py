@@ -7,6 +7,8 @@
 #%% Imports
 from selenium import webdriver
 from bs4 import BeautifulSoup
+from collections import Counter
+from itertools import repeat, chain
 import re
 import time
 import numpy as np
@@ -139,11 +141,12 @@ class SEI_quiz(SEI_Selenium):
         self.solutionInputField.submit()
 
 
-#%% Main
-if __name__ == '__main__':
+#%% Functions
+
+def scrapeSEIData(numberIterations):
     # Scraping data
     solutions = np.asarray([])
-    for i in range(100):
+    for i in range(numberIterations):
         person = SEI_quiz()
         person.moveIter(person.start[0],person.start[1])
         person.solution()
@@ -151,24 +154,30 @@ if __name__ == '__main__':
         solutions = np.concatenate((solutions,person.solution), axis=None)
         person.driver.quit()
         print('Iteration '+ str(i+1) +' done!')
+    return solutions
 
-    # Save data
+
+def append2SaveFile(solutions,fileName):
     solutions2DataFrame = pd.DataFrame(solutions)
     fileList = glob.glob('*.csv')
-    if fileList.count('scrapedSolutionData.csv') >= 1:
+    if fileList.count(fileName) >= 1:
         print('Append scraped solutions to solution file...')
-        dataFrame = pd.read_pickle('scrapedSolutionData.csv')
+        dataFrame = pd.read_pickle(fileName)
         dataFrame = dataFrame.append(solutions2DataFrame, ignore_index=True)
-        dataFrame.to_pickle('scrapedSolutionData.csv')
+        dataFrame.to_pickle(fileName)
     else:
         print('Creating solution file...')
         print('Append scraped solutions to solution file...')
-        solutions2DataFrame.to_pickle('scrapedSolutionData.csv')
-    
+        solutions2DataFrame.to_pickle(fileName)
+
+def sortByFrequency(array):
+    return np.asarray(list(chain.from_iterable(repeat(i, c) for i,c in Counter(array).most_common())))
+
+def plotDataFromCSV(csvFile):
     # Plotting data in a histogram
-    solutionsDataFrame = pd.read_pickle('scrapedSolutionData.csv')
+    solutionsDataFrame = pd.read_pickle(csvFile)
     solutionsDataFrame.columns = ['Solutions']
-    solutionArray = np.asarray(solutionsDataFrame['Solutions']).astype('<U32')
+    solutionArray = sortByFrequency(np.asarray(solutionsDataFrame['Solutions']).astype('<U32'))
     with plt.style.context(('seaborn')):
         plt.figure(figsize=[16,9])
         bins = np.arange(len(np.unique(solutionArray))+1)-0.5
@@ -177,6 +186,13 @@ if __name__ == '__main__':
         plt.title(r'\textbf{Frequency of different solutions}'
                   + '\nTotal trials: ' + str(len(solutionArray))
                   + '\nNumber of different solutions: ' + str(len(np.unique(solutionArray))))
+#%% Main
+if __name__ == '__main__':
+    solutions = scrapeSEIData(1)
+    append2SaveFile(solutions,'scrapedSolutionData.csv')
+    plotDataFromCSV('scrapedSolutionData.csv')
+    
+    
     
     
 
