@@ -29,7 +29,7 @@ class SEI_Selenium():
         self.letters = self.getLetters()        
         
     def callAndPrepareSEIQuiz(self):
-        self.driver = webdriver.Chrome(executable_path=r'./chromedriver.exe')
+        self.driver = webdriver.Chrome(executable_path=r'C:/Users/Nico Sieber/Documents/Python Projects/Selenium Tests/chromedriver.exe')
         self.driver.get('http://www.holdirdeinenvertrag.de/')
         return BeautifulSoup(self.driver.page_source, "html.parser")
         
@@ -188,7 +188,7 @@ def plotDataFromCSV(csvFile):
                   + '\nNumber of different solutions: ' + str(len(np.unique(solutionArray))))
 #%% Main
 if __name__ == '__main__':
-    solutions = scrapeSEIData(1)
+    solutions = scrapeSEIData(800)
     append2SaveFile(solutions,'scrapedSolutionData.csv')
     plotDataFromCSV('scrapedSolutionData.csv')
     
