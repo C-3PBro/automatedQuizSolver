@@ -23,4 +23,4 @@ Each of the stones that Oedipus has to pick up carries a letter. There are 5 sto
 * Selenium 
 * BeautifulSoup
 
-In the code I use the chromdriver.exe (https://sites.google.com/a/chromium.org/chromedriver/downloads/) as a webdriver for Selenium. For the code to run properly, specify the file location of the chromedriver.exe (line 25 in the code). Other packages used in the code are 're' and 'time'. 
+In the code I use the chromdriver.exe (https://sites.google.com/a/chromium.org/chromedriver/downloads/) as a webdriver for Selenium. For the code to run properly, specify the file location of the chromedriver.exe (line 25 in the code). 
